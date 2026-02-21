@@ -1215,16 +1215,35 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
 
 <script>
   // Always start at top on reload / first load
-  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  // ===== FORCE START AT TOP (mobile HARD fix) =====
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
-  window.addEventListener("load", () => {
-    window.scrollTo(0, 0);
-  });
+function forceTopHard(){
+  // remove #services/#contact so refresh can't jump there
+  if (location.hash) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
 
-  // If restored from bfcache (mobile safari / chrome), force top
-  window.addEventListener("pageshow", (event) => {
-    if (event.persisted) window.scrollTo(0, 0);
-  });
+  // multiple kicks because iOS restores scroll AFTER load sometimes
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => window.scrollTo(0, 0));
+  setTimeout(() => window.scrollTo(0, 0), 50);
+  setTimeout(() => window.scrollTo(0, 0), 250);
+  setTimeout(() => window.scrollTo(0, 0), 700);
+}
+
+window.addEventListener("load", forceTopHard);
+window.addEventListener("pageshow", forceTopHard);
+
+// if they switch tabs/back and it restores scroll, force top again
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) forceTopHard();
+});
+
+// extra: before leaving, set scroll top so browser "remembers" top
+window.addEventListener("beforeunload", () => {
+  window.scrollTo(0, 0);
+});
 
   // Year
   document.getElementById("year").textContent = new Date().getFullYear();
