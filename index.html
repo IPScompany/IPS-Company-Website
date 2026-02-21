@@ -473,6 +473,27 @@ textarea.input{min-height:110px; resize:vertical;}
   opacity:.8;
 }
 
+/* Form warning (for in-progress form) */
+.form-warning{
+  margin-top:16px;
+  padding:14px 16px;
+  border-radius:12px;
+  background:rgba(214,135,92,.12);
+  border:1px solid rgba(214,135,92,.35);
+  font-size:15px;
+  line-height:1.6;
+  font-weight:500;
+}
+
+.form-warning a{
+  color:var(--dark);
+  text-decoration:underline;
+}
+
+.form-warning strong{
+  font-weight:700;
+}
+
 /* FOOTER */
 footer{
   background:#3a2e26;
@@ -580,10 +601,6 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     <div class="hero-content">
       <img class="logo" src="assets/logo-main.png" alt="IPS Logo" />
       <h1>Industrial Pipe & Supply Co.</h1>
-      <p class="lead">
-        Serving industrial and commercial clients with reliable pipe, fittings, valves,
-        and distribution services.
-      </p>
 
       <p class="tagline">“Our greatest asset? Your trust in our eminence.”</p>
       <div class="divider"></div>
@@ -591,7 +608,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
       <div class="pill-row">
         <span class="pill">Fast distribution</span>
         <span class="pill">Commercial-grade materials</span>
-        <span class="pill">Trusted since ____</span>
+        <span class="pill">Trusted since 0000</span>
       </div>
 
       <div class="hero-actions">
@@ -777,7 +794,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
         <p class="small">Hours and phone number can be added here when you’re ready.</p>
       </div>
 
-      <!-- <div class="contact-card reveal">
+      <div class="contact-card reveal">
         <span class="kicker">Quick message</span>
         <h3>Send a note</h3>
 
@@ -787,9 +804,13 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
           <input class="input" type="email" name="email" placeholder="Email address" required />
           <textarea class="input" name="message" placeholder="How can we help?" required></textarea>
           <button class="btn btn-primary" type="submit" style="border:none; cursor:pointer;">Send Message</button>
-          <div class="small">This form can submit through Netlify automatically.</div>
+          <div class="form-warning">
+            ⚠️ This form is currently under construction. 
+            Please email us directly at 
+            <a href="mailto:info@industrialpipe.com"><strong>info@industrialpipe.com</strong></a>.
+          </div>
         </form>
-      </div> -->
+      </div>
     </div>
   </div>
 </section>
