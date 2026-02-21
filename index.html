@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Industrial Pipe  &  Supply Co.</title>
+<title>Industrial Pipe & Supply Co.</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
@@ -16,8 +16,11 @@
 
   --shadow: 0 18px 50px rgba(0,0,0,.10);
   --shadow2: 0 26px 80px rgba(0,0,0,.16);
-  --radius: 18px;
-  --radius2: 20px;
+
+  /* more “square” */
+  --radius: 12px;
+  --radius2: 14px;
+
   --ease: cubic-bezier(.2,.9,.2,1);
 
   --glass: rgba(255,255,255,.62);
@@ -35,29 +38,38 @@ body{
 }
 
 /* ========= AWWWARDS VIBE LAYERS ========= */
-
-/* Moving gradient “mesh” */
 .bg-mesh{
   position:fixed;
-  inset:-20%;
+  inset:0;
   z-index:-5;
+
+  /* square industrial grid (not blobs) */
   background:
-    radial-gradient(900px 520px at 18% 20%, rgba(214,135,92,.25), transparent 60%),
-    radial-gradient(820px 520px at 80% 18%, rgba(0,0,0,.10), transparent 62%),
-    radial-gradient(900px 620px at 65% 72%, rgba(214,135,92,.18), transparent 60%),
-    radial-gradient(900px 700px at 20% 75%, rgba(0,0,0,.08), transparent 62%),
-    linear-gradient(120deg, rgba(255,255,255,.55), rgba(255,255,255,.20));
-  filter: blur(18px);
-  transform: translate3d(0,0,0);
-  animation: meshFloat 16s var(--ease) infinite alternate;
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,.04) 0px,
+      rgba(0,0,0,.04) 1px,
+      transparent 1px,
+      transparent 64px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,.04) 0px,
+      rgba(0,0,0,.04) 1px,
+      transparent 1px,
+      transparent 64px
+    ),
+    linear-gradient(135deg, rgba(214,135,92,.10), rgba(0,0,0,.05));
+
+  animation: gridMove 18s linear infinite;
   opacity:.95;
 }
-@keyframes meshFloat{
-  0%{transform:translate(-1.2%, -1.0%) scale(1.02) rotate(-.4deg);}
-  100%{transform:translate(1.0%, 1.1%) scale(1.06) rotate(.5deg);}
+@keyframes gridMove{
+  0%{background-position:0 0, 0 0, 0 0;}
+  100%{background-position:64px 0, 0 64px, 0 0;}
 }
 
-/* Grain overlay (premium look) */
+/* Grain overlay */
 .grain{
   position:fixed;
   inset:-40%;
@@ -65,7 +77,7 @@ body{
   pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.26'/%3E%3C/svg%3E");
   mix-blend-mode:multiply;
-  opacity:.18;
+  opacity:.16;
   animation: grainMove 10s steps(2) infinite;
 }
 @keyframes grainMove{
@@ -86,7 +98,7 @@ body{
   transform-origin:left;
 }
 
-/* Mouse spotlight */
+/* Mouse spotlight (still subtle) */
 .mouse-spot{
   position:fixed;
   inset:0;
@@ -94,9 +106,9 @@ body{
   z-index:-3;
   background:
     radial-gradient(420px 420px at var(--mx, 50%) var(--my, 50%),
-      rgba(214,135,92,.20),
+      rgba(214,135,92,.18),
       transparent 60%);
-  opacity:.55;
+  opacity:.45;
   transition: opacity .25s var(--ease);
 }
 
@@ -154,7 +166,7 @@ nav ul{
 }
 nav a{
   text-decoration:none;
-  font-weight:700;
+  font-weight:800;
   position:relative;
   padding:8px 6px;
   opacity:.92;
@@ -204,15 +216,13 @@ nav a.active::after{
   overflow:hidden;
 }
 
-/* Hero “cinematic” layer */
+/* hero background uses YOUR image */
 .hero-bg{
   position:absolute;
   inset:0;
   z-index:0;
   background:
-    radial-gradient(900px 520px at 20% 25%, rgba(214,135,92,.24), transparent 60%),
-    radial-gradient(900px 520px at 80% 18%, rgba(0,0,0,.12), transparent 62%),
-    linear-gradient(rgba(255,255,255,.68), rgba(255,255,255,.68)),
+    linear-gradient(rgba(255,255,255,.62), rgba(255,255,255,.62)),
     url("assets/hero-bg.png") center/cover no-repeat;
   transform: scale(1.05);
   filter:saturate(.95) contrast(1.02);
@@ -220,26 +230,33 @@ nav a.active::after{
 .hero-bg::after{
   content:"";
   position:absolute; inset:0;
-  background:radial-gradient(1200px 600px at 50% 30%, transparent 35%, rgba(0,0,0,.14) 100%);
-  opacity:.45;
+  background:linear-gradient(180deg, rgba(0,0,0,.00), rgba(0,0,0,.16));
+  opacity:.85;
 }
+
+/* square sweep (not glow beam) */
 .hero::before{
-  /* animated “beam” sweep */
   content:"";
   position:absolute;
-  inset:-40%;
+  inset:0;
   z-index:1;
   background:
-    radial-gradient(600px 200px at 50% 40%, rgba(214,135,92,.18), transparent 60%),
-    linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
-  transform: rotate(12deg);
-  animation: heroSweep 10s linear infinite;
-  opacity:.55;
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(214,135,92,.10) 46%,
+      rgba(214,135,92,.22) 50%,
+      rgba(214,135,92,.10) 54%,
+      transparent 100%
+    );
+  transform:translateX(-100%);
+  animation: squareSweep 6.2s linear infinite;
   pointer-events:none;
+  opacity:.55;
 }
-@keyframes heroSweep{
-  0%{transform:translateX(-18%) rotate(12deg);}
-  100%{transform:translateX(18%) rotate(12deg);}
+@keyframes squareSweep{
+  0%{transform:translateX(-100%);}
+  100%{transform:translateX(100%);}
 }
 
 .hero-grid{
@@ -275,18 +292,6 @@ nav a.active::after{
   line-height:1.02;
   font-family: "Playfair Display", serif;
 }
-.hero h1 .shine{
-  background:linear-gradient(90deg, var(--dark), rgba(214,135,92,.95), var(--dark));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  background-size:200% 100%;
-  animation: textShine 3.6s var(--ease) infinite;
-}
-@keyframes textShine{
-  0%{background-position:0% 50%;}
-  100%{background-position:200% 50%;}
-}
 
 .tagline{
   font-family:'Playfair Display', serif;
@@ -309,7 +314,7 @@ nav a.active::after{
 }
 @keyframes growLine{to{transform:scaleX(1);}}
 
-/* Pills */
+/* Pills (still slightly rounded but not super pill) */
 .pill-row{
   display:flex;
   gap:10px;
@@ -319,8 +324,8 @@ nav a.active::after{
 .pill{
   font-size:13px;
   padding:9px 13px;
-  border-radius:999px;
-  background:rgba(255,255,255,.74);
+  border-radius:12px;
+  background:rgba(255,255,255,.78);
   border:1px solid rgba(0,0,0,.10);
   position:relative;
   overflow:hidden;
@@ -331,7 +336,7 @@ nav a.active::after{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(120deg, transparent, rgba(214,135,92,.20), transparent);
+  background:linear-gradient(120deg, transparent, rgba(214,135,92,.18), transparent);
   transform:translateX(-120%);
   transition: transform .6s var(--ease);
 }
@@ -345,7 +350,7 @@ nav a.active::after{
   margin-top:26px;
 }
 
-/* Buttons (glow + magnetic feel in JS) */
+/* Buttons */
 .btn{
   display:inline-flex;
   align-items:center;
@@ -354,7 +359,7 @@ nav a.active::after{
   border-radius:12px;
   text-decoration:none;
   transition:.25s var(--ease);
-  font-weight:800;
+  font-weight:900;
   letter-spacing:.15px;
   position:relative;
   overflow:hidden;
@@ -434,9 +439,9 @@ nav a.active::after{
   position:absolute;
   inset:-40px -40px auto auto;
   width:190px; height:190px;
-  background:radial-gradient(circle at 30% 30%, rgba(214,135,92,.22), transparent 60%);
+  background:linear-gradient(135deg, rgba(214,135,92,.18), transparent);
   transform: rotate(20deg);
-  border-radius:60px;
+  border-radius:18px;
 }
 .hero-side h3{margin:0 0 8px 0; font-size:18px; position:relative; z-index:1;}
 .hero-side p{margin:0 0 14px 0; opacity:.92; line-height:1.6; font-size:15px; position:relative; z-index:1;}
@@ -445,10 +450,10 @@ nav a.active::after{
   display:inline-block;
   margin-top:14px;
   padding:10px 12px;
-  border-radius:14px;
+  border-radius:12px;
   background:rgba(214,135,92,.14);
   border:1px solid rgba(214,135,92,.35);
-  font-weight:800;
+  font-weight:900;
   position:relative; z-index:1;
 }
 
@@ -471,7 +476,7 @@ section{padding:110px 60px;}
 }
 
 /* ========= STATS ========= */
-.stats{padding:0 60px 78px 60px; margin-top:-48px; position:relative; z-index:5;}
+.stats{padding:0 60px 46px 60px; margin-top:-48px; position:relative; z-index:5;}
 .stats .panel{
   max-width:1200px;
   margin:0 auto;
@@ -491,7 +496,7 @@ section{padding:110px 60px;}
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(120deg, transparent, rgba(214,135,92,.12), transparent);
+  background:linear-gradient(120deg, transparent, rgba(214,135,92,.10), transparent);
   transform:translateX(-120%);
   animation: panelSweep 9s linear infinite;
   opacity:.8;
@@ -505,52 +510,81 @@ section{padding:110px 60px;}
 .stat .num{font-size:30px; font-weight:900; letter-spacing:.2px;}
 .stat .label{margin-top:6px; font-size:14px; opacity:.85;}
 
-/* ========= MARQUEE / TICKER ========= */
-.ticker{
-  padding:0 60px 0 60px;
-}
+/* ========= TICKER (MORE SQUARE + ICONS) ========= */
+.ticker{ padding:0 60px 0 60px; }
+
 .ticker .rail{
   max-width:1200px;
   margin:0 auto;
-  border-radius:999px;
-  border:1px solid rgba(0,0,0,.10);
-  background:rgba(255,255,255,.65);
-  box-shadow: 0 14px 40px rgba(0,0,0,.08);
+  border-radius:12px; /* square-ish container */
+  border:1px solid rgba(0,0,0,.12);
+  background:rgba(255,255,255,.70);
+  box-shadow: 0 18px 55px rgba(0,0,0,.10);
   overflow:hidden;
   backdrop-filter: blur(14px);
+  position:relative;
 }
+.ticker .rail::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:2px;
+  background:linear-gradient(90deg, transparent, rgba(214,135,92,.55), transparent);
+  opacity:.75;
+}
+
 .ticker .track{
   display:flex;
-  gap:22px;
-  padding:14px 18px;
+  gap:12px;
+  padding:16px 16px;
   white-space:nowrap;
   will-change: transform;
-  animation: marquee 16s linear infinite;
+  animation: marquee 18s linear infinite;
 }
 @keyframes marquee{
   0%{transform:translateX(0);}
   100%{transform:translateX(-50%);}
 }
+
 .ticker .chip{
   display:inline-flex;
   align-items:center;
   gap:10px;
-  padding:10px 14px;
-  border-radius:999px;
-  background:rgba(255,255,255,.78);
-  border:1px solid rgba(0,0,0,.10);
-  font-weight:800;
+  padding:12px 14px;
+  border-radius:10px; /* square chip */
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(0,0,0,.12);
+  font-weight:900;
   font-size:13px;
-  opacity:.95;
+  letter-spacing:.2px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.06);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
 }
-.dot{
-  width:8px; height:8px; border-radius:50%;
-  background:var(--primary);
-  box-shadow: 0 0 0 6px rgba(214,135,92,.12);
+.ticker .chip:hover{
+  transform: translateY(-3px);
+  border-color: rgba(214,135,92,.45);
+  box-shadow: 0 16px 40px rgba(0,0,0,.10);
+}
+
+.ticker .chip-icon{
+  width:30px;
+  height:30px;
+  border-radius:8px; /* square icon box */
+  background:rgba(214,135,92,.14);
+  border:1px solid rgba(214,135,92,.35);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+.ticker .chip-icon svg{
+  width:18px;
+  height:18px;
+  fill: rgba(0,0,0,.72);
 }
 
 /* ========= ABOUT / SERVICES / WHY ========= */
-.about-grid{display:grid; grid-template-columns: 1fr 1fr; gap:24px; align-items:start;}
+.about-grid{display:grid; grid-template-columns: 1fr 1fr; gap:22px; align-items:start;}
 
 .glass-card{
   background:rgba(255,255,255,.70);
@@ -571,75 +605,14 @@ section{padding:110px 60px;}
   width:200px; height:200px;
   background:rgba(0,0,0,.05);
   transform: rotate(25deg);
-  border-radius:56px;
+  border-radius:18px;
 }
 .glass-card:hover{box-shadow: 0 30px 88px rgba(0,0,0,.16);}
 
 .kicker{color:var(--primary); font-weight:900; letter-spacing:.45px; text-transform:uppercase; font-size:12px;}
 .checks{margin:14px 0 0 0; padding-left:18px; line-height:1.95; opacity:.92;}
 
-/* Awwwards “Bento showcase” */
-.bento{
-  padding-top:40px;
-}
-.bento-grid{
-  display:grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap:18px;
-  align-items:stretch;
-}
-.bento-left{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:18px;
-}
-.bento-tile{
-  border-radius:var(--radius2);
-  border:1px solid rgba(0,0,0,.10);
-  background:rgba(255,255,255,.70);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  position:relative;
-  min-height:240px;
-  backdrop-filter: blur(14px);
-  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
-}
-.bento-tile:hover{
-  transform: translateY(-8px);
-  box-shadow: var(--shadow2);
-}
-.bento-tile .img{
-  position:absolute; inset:0;
-  background-size:cover;
-  background-position:center;
-  transform: scale(1.05);
-  filter:saturate(.95) contrast(1.02);
-  transition: transform .55s var(--ease);
-}
-.bento-tile:hover .img{transform: scale(1.12);}
-.bento-tile::after{
-  content:"";
-  position:absolute; inset:0;
-  background: linear-gradient(180deg, rgba(0,0,0,.00), rgba(0,0,0,.55));
-  opacity:.9;
-}
-.bento-tile .meta{
-  position:absolute; left:18px; right:18px; bottom:16px;
-  color:white;
-  z-index:2;
-}
-.bento-tile .meta h4{margin:0 0 6px 0; font-size:18px; letter-spacing:.2px;}
-.bento-tile .meta p{margin:0; opacity:.92; line-height:1.55; font-size:13.5px;}
-.bento-right{
-  display:grid;
-  gap:18px;
-}
-.bento-right .glass-card{
-  min-height:240px;
-}
-.bento-right .glass-card p{opacity:.92; line-height:1.7;}
-
-/* Services cards */
+/* Services */
 .services{display:flex; justify-content:center; gap:18px; margin-top:26px; flex-wrap:wrap;}
 .card{
   background:rgba(255,255,255,.74);
@@ -662,7 +635,7 @@ section{padding:110px 60px;}
   width:170px; height:170px;
   background:rgba(214,135,92,.18);
   transform: rotate(25deg);
-  border-radius:46px;
+  border-radius:18px;
 }
 .card::after{
   content:"";
@@ -685,7 +658,7 @@ section{padding:110px 60px;}
 .brand-row{display:flex; gap:16px; flex-wrap:wrap; justify-content:center;}
 .brand{
   padding:12px 16px;
-  border-radius:999px;
+  border-radius:12px;
   background:rgba(255,255,255,.78);
   border:1px solid rgba(0,0,0,.10);
   font-weight:900;
@@ -742,8 +715,7 @@ section{padding:110px 60px;}
   border:1px solid rgba(0,0,0,.10);
   box-shadow:var(--shadow2);
   background:
-    radial-gradient(900px 420px at 20% 30%, rgba(214,135,92,.24), transparent 60%),
-    linear-gradient(120deg, rgba(255,255,255,.88), rgba(255,255,255,.68));
+    linear-gradient(135deg, rgba(214,135,92,.16), rgba(255,255,255,.75));
   padding:34px;
   display:flex;
   align-items:center;
@@ -804,12 +776,12 @@ textarea.input{min-height:110px; resize:vertical;}
 .form-warning{
   margin-top:16px;
   padding:14px 16px;
-  border-radius:16px;
+  border-radius:12px;
   background:rgba(214,135,92,.12);
   border:1px solid rgba(214,135,92,.35);
   font-size:15px;
   line-height:1.65;
-  font-weight:600;
+  font-weight:700;
 }
 .form-warning a{color:var(--dark); text-decoration:underline;}
 .form-warning strong{font-weight:900;}
@@ -846,7 +818,7 @@ footer .footlinks{
 footer .footlinks a{color:white; text-decoration:none; opacity:.85;}
 footer .footlinks a:hover{opacity:1; text-decoration:underline;}
 
-/* ========= REVEAL + TEXT SPLIT ========= */
+/* Reveal */
 .reveal{
   opacity:0;
   transform: translateY(26px) scale(.985);
@@ -860,33 +832,15 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
 }
 .reveal[data-delay]{ transition-delay: var(--d, 0ms); }
 
-.split{
-  display:inline-block;
-}
-.split .w{
-  display:inline-block;
-  transform: translateY(18px);
-  opacity:0;
-  filter: blur(6px);
-}
-.split.show .w{
-  transform: translateY(0);
-  opacity:1;
-  filter: blur(0);
-  transition: transform .9s var(--ease), opacity .9s var(--ease), filter .9s var(--ease);
-}
-
 @keyframes fadeUp{ from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
 
-/* ========= RESPONSIVE ========= */
+/* Responsive */
 @media(max-width:980px){
   .hero-grid{grid-template-columns:1fr; gap:20px;}
   .stats .panel{grid-template-columns: repeat(2, 1fr);}
   .about-grid{grid-template-columns:1fr;}
   .why-grid{grid-template-columns:1fr;}
   .contact-wrap{grid-template-columns:1fr;}
-  .bento-grid{grid-template-columns:1fr;}
-  .bento-left{grid-template-columns:1fr;}
 }
 @media(max-width:768px){
   nav{padding:14px 18px;}
@@ -902,7 +856,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     padding:16px;
     gap:14px;
     display:none;
-    border-radius:16px;
+    border-radius:14px;
     box-shadow:0 10px 30px rgba(0,0,0,.12);
     border:1px solid rgba(0,0,0,.08);
   }
@@ -913,10 +867,10 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   .divider{margin:20px auto; transform-origin:center;}
   .hero-actions{justify-content:center;}
   section{padding:90px 18px;}
-  .stats{padding:0 18px 70px 18px; margin-top:-30px;}
+  .stats{padding:0 18px 46px 18px; margin-top:-30px;}
+  .ticker{padding:0 18px;}
   .cta{padding:0 18px 90px 18px;}
   .section-divider{margin:0 18px;}
-  .ticker{padding:0 18px;}
 }
 
 /* Reduced motion */
@@ -926,10 +880,6 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   .scrollbar{display:none;}
   .mouse-spot{display:none;}
 }
-
-/* Optional: smooth “floating” */
-.floaty{animation: floaty 6s var(--ease) infinite alternate;}
-@keyframes floaty{from{transform:translateY(0);} to{transform:translateY(-6px);} }
 </style>
 </head>
 
@@ -958,9 +908,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   <div class="container hero-grid">
     <div class="hero-content">
       <img class="logo" src="assets/logo-main.png" alt="IPS Logo" />
-      <h1 class="split" data-split>
-        <h1>Industrial Pipe &amp; Supply Co.</h1>
-      </h1>
+      <h1>Industrial Pipe &amp; Supply Co.</h1>
 
       <p class="tagline">“Our greatest asset? Your trust in our eminence.”</p>
       <div class="divider"></div>
@@ -977,7 +925,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
       </div>
     </div>
 
-    <aside class="hero-side floaty">
+    <aside class="hero-side tilt">
       <span class="kicker">Now Building</span>
       <h3>Our new website is coming soon.</h3>
       <p>
@@ -1015,21 +963,53 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   </div>
 </section>
 
+<!-- SQUARE TICKER -->
 <section class="ticker reveal" aria-label="Highlights ticker">
   <div class="rail">
     <div class="track" id="tickerTrack">
-      <span class="chip"><span class="dot"></span> Chicagoland distribution</span>
-      <span class="chip"><span class="dot"></span> Pipe • Valves • Fittings</span>
-      <span class="chip"><span class="dot"></span> Special order sourcing</span>
-      <span class="chip"><span class="dot"></span> Account support</span>
-      <span class="chip"><span class="dot"></span> Contractor-ready supply</span>
+
+      <span class="chip">
+        <span class="chip-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 9h13v8H4zM17 12h3v5h-3zM7 17h2v2H7zM12 17h2v2h-2z"/></svg>
+        </span>
+        Chicagoland distribution
+      </span>
+
+      <span class="chip">
+        <span class="chip-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16v10H4zM7 4h10v3H7zM7 17h10v3H7z"/></svg>
+        </span>
+        Pipe • Valves • Fittings
+      </span>
+
+      <span class="chip">
+        <span class="chip-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 11h16v2H4zM11 4h2v16h-2z"/></svg>
+        </span>
+        Special order sourcing
+      </span>
+
+      <span class="chip">
+        <span class="chip-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7zM4 4h3v3H4zM17 4h3v3h-3zM4 17h3v3H4zM17 17h3v3h-3z"/></svg>
+        </span>
+        Account support
+      </span>
+
+      <span class="chip">
+        <span class="chip-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 9h18v6H3zM7 5h10v4H7zM7 15h10v4H7z"/></svg>
+        </span>
+        Contractor-ready supply
+      </span>
 
       <!-- duplicate for seamless marquee -->
-      <span class="chip"><span class="dot"></span> Chicagoland distribution</span>
-      <span class="chip"><span class="dot"></span> Pipe • Valves • Fittings</span>
-      <span class="chip"><span class="dot"></span> Special order sourcing</span>
-      <span class="chip"><span class="dot"></span> Account support</span>
-      <span class="chip"><span class="dot"></span> Contractor-ready supply</span>
+      <span class="chip"><span class="chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9h13v8H4zM17 12h3v5h-3zM7 17h2v2H7zM12 17h2v2h-2z"/></svg></span>Chicagoland distribution</span>
+      <span class="chip"><span class="chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16v10H4zM7 4h10v3H7zM7 17h10v3H7z"/></svg></span>Pipe • Valves • Fittings</span>
+      <span class="chip"><span class="chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 11h16v2H4zM11 4h2v16h-2z"/></svg></span>Special order sourcing</span>
+      <span class="chip"><span class="chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h10v10H7zM4 4h3v3H4zM17 4h3v3h-3zM4 17h3v3H4zM17 17h3v3h-3z"/></svg></span>Account support</span>
+      <span class="chip"><span class="chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9h18v6H3zM7 5h10v4H7zM7 15h10v4H7z"/></svg></span>Contractor-ready supply</span>
+
     </div>
   </div>
 </section>
@@ -1073,53 +1053,6 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
         </ul>
       </div>
     </div>
-
-    <!-- Awwwards-style bento -->
-    <div class="bento reveal">
-      <div class="bento-grid">
-        <div class="bento-left">
-          <div class="bento-tile reveal tilt">
-            <div class="img" style="background-image:url('https://images.unsplash.com/photo-1581092919535-7146f6aa9c41?auto=format&fit=crop&w=2000&q=70');"></div>
-            <div class="meta">
-              <h4>Commercial-grade sourcing</h4>
-              <p>Parts that hold up in real conditions — not “close enough.”</p>
-            </div>
-          </div>
-
-          <div class="bento-tile reveal tilt">
-            <div class="img" style="background-image:url('https://images.unsplash.com/photo-1581091215367-59ab6f7d7b4d?auto=format&fit=crop&w=2000&q=70');"></div>
-            <div class="meta">
-              <h4>Jobsite-ready distribution</h4>
-              <p>Local delivery built around timelines and urgency.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bento-right">
-          <div class="glass-card reveal tilt">
-            <span class="kicker">What you get</span>
-            <h3>Speed + clarity, without the chaos.</h3>
-            <p>
-              You’ll always know what’s in stock, what’s sourcing, and what’s landing — with real updates,
-              not vague promises.
-            </p>
-            <div class="hero-actions" style="margin-top:16px;">
-              <a class="btn btn-primary magnetic" href="#contact">Talk to us →</a>
-              <a class="btn btn-ghost magnetic" href="#services">See services</a>
-            </div>
-          </div>
-
-          <div class="bento-tile reveal tilt" style="min-height:210px;">
-            <div class="img" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=2000&q=70');"></div>
-            <div class="meta">
-              <h4>Chicagoland focused</h4>
-              <p>Built for contractors, facilities, and maintenance teams.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -1175,7 +1108,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
 
 <section id="why">
   <div class="section-inner">
-    <h2 class="section-title reveal">Why Choose Us </h2>
+    <h2 class="section-title reveal">Why Choose Us</h2>
     <p class="section-sub reveal">
       We keep it simple: dependable product, reliable communication, and delivery you can plan around.
     </p>
@@ -1293,7 +1226,6 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   });
 
   // Mouse spotlight
-  const spot = document.getElementById("mouseSpot");
   window.addEventListener("mousemove", (e) => {
     const mx = (e.clientX / window.innerWidth) * 100;
     const my = (e.clientY / window.innerHeight) * 100;
@@ -1301,12 +1233,12 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     document.body.style.setProperty("--my", my + "%");
   });
 
-  // Hero subtle parallax
+  // Hero parallax (subtle)
   const heroBg = document.getElementById("heroBg");
   window.addEventListener("scroll", () => {
     const y = window.scrollY;
     if(heroBg){
-      heroBg.style.transform = `translateY(${Math.min(y * 0.10, 70)}px) scale(1.06)`;
+      heroBg.style.transform = `translateY(${Math.min(y * 0.08, 60)}px) scale(1.05)`;
     }
   });
 
@@ -1344,16 +1276,16 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   window.addEventListener("scroll", setActive);
   setActive();
 
-  // 3D tilt on cards
+  // 3D tilt (cards + hero side)
   const tilts = document.querySelectorAll(".tilt");
   tilts.forEach(card => {
     card.addEventListener("mousemove", (e) => {
       const r = card.getBoundingClientRect();
       const x = e.clientX - r.left;
       const y = e.clientY - r.top;
-      const rx = ((y / r.height) - 0.5) * -8;
-      const ry = ((x / r.width) - 0.5) * 10;
-      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+      const rx = ((y / r.height) - 0.5) * -7;
+      const ry = ((x / r.width) - 0.5) * 9;
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
     });
     card.addEventListener("mouseleave", () => { card.style.transform = ""; });
   });
@@ -1370,28 +1302,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
   });
 
-  // Text split animation (for hero title)
-  const splitEls = document.querySelectorAll("[data-split]");
-  splitEls.forEach(el => {
-    const text = el.textContent.trim();
-    el.textContent = "";
-    el.classList.add("split");
-    const words = text.split(" ");
-    words.forEach((w, idx) => {
-      const span = document.createElement("span");
-      span.className = "w";
-      span.textContent = w + (idx < words.length - 1 ? " " : "");
-      span.style.transitionDelay = (idx * 60) + "ms";
-      el.appendChild(span);
-    });
-
-    // reveal on load (hero)
-    requestAnimationFrame(() => {
-      el.classList.add("show");
-    });
-  });
-
-  // Count-up stats (kept from your original)
+  // Count-up stats (optional later)
   function animateCount(el, to){
     const from = 0;
     const start = performance.now();
@@ -1404,6 +1315,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     }
     requestAnimationFrame(step);
   }
+
   const countEls = document.querySelectorAll(".num[data-count]");
   const countIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
