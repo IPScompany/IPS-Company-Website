@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Industrial Pipe & Supply Co.</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --primary:#d6875c;
+  --dark:#2a2a2a;
+  --light:#f4f2ef;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family: Georgia, serif;
+  background:var(--light);
+  color:var(--dark);
+}
+
+html{scroll-behavior:smooth;}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  background:rgba(255,255,255,.95);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 60px;
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+  z-index:1000;
+}
+
+nav img{
+  height:60px;
+}
+
+nav ul{
+  display:flex;
+  gap:30px;
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+
+nav a{
+  text-decoration:none;
+  color:var(--dark);
+  font-weight:600;
+}
+
+/* Mobile menu button */
+.menu-toggle{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+  user-select:none;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding:120px 80px 80px 80px; /* top padding accounts for fixed nav */
+  background:
+    linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.6)),
+    url("assets/hero-bg.png") center/cover no-repeat;
+}
+
+.hero-content{
+  max-width:650px;
+  animation:fadeUp 1s ease-out;
+}
+
+.hero img{
+  width:240px;
+  margin-bottom:20px;
+}
+
+.hero h1{
+  font-size:clamp(32px, 5vw, 58px);
+  margin:0;
+}
+
+/* Animated Quote */
+.tagline{
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.2vw, 24px);
+  margin-top: 20px;
+  animation: fadeIn 1.5s ease forwards;
+  opacity: 0;
+}
+
+.subtext{
+  margin-top:20px;
+  font-size:clamp(15px, 1.8vw, 18px);
+  animation: fadeIn 2s ease forwards;
+  opacity:0;
+}
+
+.divider{
+  width:100px;
+  height:3px;
+  background:var(--primary);
+  margin:25px 0;
+  animation: growLine 1.5s ease forwards;
+  transform:scaleX(0);
+  transform-origin:left;
+}
+
+.btn{
+  margin-top:30px;
+  display:inline-block;
+  padding:14px 28px;
+  background:#2a2a2a;
+  color:white;
+  text-decoration:none;
+  border-radius:6px;
+  transition:.3s;
+}
+
+.btn:hover{
+  background:var(--primary);
+}
+
+/* SECTIONS */
+section{
+  padding:120px 60px;
+  text-align:center;
+}
+
+.services{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  margin-top:50px;
+  flex-wrap:wrap;
+}
+
+.card{
+  background:white;
+  padding:35px;
+  width:100%;
+  max-width:320px;
+  border-radius:12px;
+  box-shadow:0 15px 40px rgba(0,0,0,.08);
+  transition:.4s;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+}
+
+.card img{
+  width:60px;
+  margin-bottom:15px;
+}
+
+/* FOOTER */
+footer{
+  background:#3a2e26;
+  color:white;
+  padding:60px 20px;
+  text-align:center;
+}
+
+footer img{
+  width:180px;
+  margin-bottom:20px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(40px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeIn{
+  to{opacity:1;}
+}
+
+@keyframes growLine{
+  to{transform:scaleX(1);}
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{padding:120px 30px 60px 30px;}
+  section{padding:90px 20px;}
+}
+
+@media(max-width:768px){
+
+  nav{
+    padding:15px 20px;
+  }
+
+  nav img{
+    height:45px;
+  }
+
+  /* dropdown menu */
+  nav ul{
+    position:absolute;
+    top:100%;
+    right:0;
+    background:white;
+    flex-direction:column;
+    width:220px;
+    padding:18px;
+    gap:18px;
+    display:none;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+  }
+
+  nav ul.active{
+    display:flex;
+  }
+
+  .menu-toggle{
+    display:block;
+  }
+
+  .hero{
+    text-align:center;
+    justify-content:center;
+    padding:120px 20px 60px 20px;
+  }
+
+  .hero-content{
+    max-width:520px;
+  }
+
+  .hero img{
+    width:180px;
+  }
+
+  .divider{
+    margin:25px auto;
+    transform-origin:center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <img src="assets/logo-main.png" alt="IPS Logo" />
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <ul id="nav-links">
+    <li><a href="#about" onclick="closeMenu()">About</a></li>
+    <li><a href="#services" onclick="closeMenu()">Services</a></li>
+    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <img src="assets/logo-main.png" alt="IPS Logo" />
+    <h1>Website Coming Soon</h1>
+
+    <p class="tagline">“Our greatest asset? Your trust in our eminence.”</p>
+
+    <div class="divider"></div>
+
+    <p class="subtext">We are building our new digital home.</p>
+
+    <a href="#services" class="btn">Explore Services</a>
+  </div>
+</div>
+
+<section id="about">
+  <h2>About Us</h2>
+  <p>
+    Serving industrial and commercial clients with reliable pipe,
+    fittings, valves, and distribution services since 1910.
+  </p>
+</section>
+
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="services">
+    <div class="card">
+      <img src="assets/icon-pipe.png" alt="Pipe icon" />
+      <h3>Industrial Pipe</h3>
+      <p>High-quality pipe solutions for commercial applications.</p>
+    </div>
+    <div class="card">
+      <img src="assets/icon-valve.png" alt="Valve icon" />
+      <h3>Valves & Fittings</h3>
+      <p>Reliable valves and durable fittings for all systems.</p>
+    </div>
+    <div class="card">
+      <img src="assets/icon-truck.png" alt="Truck icon" />
+      <h3>Distribution</h3>
+      <p>Fast, dependable supply chain solutions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p>5100 W. 16th St — Cicero, IL 60804</p>
+  <p>info@industrialpipe.com</p>
+</section>
+
+<footer>
+  <img src="assets/logo-main.png" alt="IPS Logo" />
+  <p>© <span id="year"></span> Industrial Pipe & Supply Co.</p>
+  <p style="margin-top:10px; font-size:14px; opacity:.8;">
+    Created by Asif Rifat
+  </p>
+</footer>
+
+<script>
+  // Year in footer
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Mobile menu toggle
+  function toggleMenu(){
+    document.getElementById("nav-links").classList.toggle("active");
+  }
+
+  function closeMenu(){
+    document.getElementById("nav-links").classList.remove("active");
+  }
+</script>
+
+</body>
+</html>
