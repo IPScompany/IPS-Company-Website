@@ -16,11 +16,6 @@
   --shadow: 0 15px 40px rgba(0,0,0,.08);
   --shadow2: 0 22px 60px rgba(0,0,0,.12);
   --radius: 14px;
-
-  /* Extra “industrial” polish */
-  --steel: rgba(0,0,0,.08);
-  --steel2: rgba(0,0,0,.14);
-  --glow: 0 0 0 6px rgba(214,135,92,.14);
   --ease: cubic-bezier(.2,.9,.2,1);
 }
 
@@ -34,16 +29,25 @@ body{
   overflow-x:hidden;
 }
 
-a{color:inherit;}
-.container{max-width:1200px; margin:0 auto;}
+/* ---------- SCROLL PROGRESS BAR ---------- */
+.scrollbar{
+  position:fixed;
+  top:0;
+  left:0;
+  height:3px;
+  width:0%;
+  background:linear-gradient(90deg, var(--primary), rgba(0,0,0,.18));
+  z-index:2000;
+  transform-origin:left;
+}
 
-/* ---------- GLOBAL “INDUSTRIAL” TEXTURE LAYER ---------- */
+/* ---------- GLOBAL INDUSTRIAL TEXTURE ---------- */
 body::before{
   content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:-1;
+  z-index:-2;
   opacity:.14;
   background:
     radial-gradient(1200px 700px at 20% 10%, rgba(0,0,0,.08), transparent 60%),
@@ -51,18 +55,56 @@ body::before{
     repeating-linear-gradient(45deg, rgba(0,0,0,.035) 0px, rgba(0,0,0,.035) 1px, transparent 1px, transparent 8px);
   mix-blend-mode:multiply;
 }
-
-/* Optional “grain” for heavy-duty look */
 body::after{
   content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:-1;
+  z-index:-2;
   opacity:.10;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
   mix-blend-mode:multiply;
 }
+
+/* ---------- MOUSE “SPOTLIGHT” (does NOT replace cursor) ---------- */
+.mouse-spot{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(420px 420px at var(--mx, 50%) var(--my, 50%),
+      rgba(214,135,92,.18),
+      transparent 60%);
+  opacity:.55;
+  transition: opacity .25s var(--ease);
+}
+
+/* ---------- SECTION “STEEL DIVIDERS” ---------- */
+.section-divider{
+  height:1px;
+  margin:0 60px;
+  background:
+    linear-gradient(90deg, transparent, rgba(0,0,0,.18), transparent);
+  position:relative;
+}
+.section-divider::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-1px;
+  width:120px;
+  height:3px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg, rgba(0,0,0,.08), var(--primary), rgba(0,0,0,.08));
+  border-radius:2px;
+  opacity:.9;
+}
+
+/* ---------- LINKS / CURSOR NORMAL ---------- */
+a{color:inherit;}
+a, button, .btn{cursor:pointer;}
+.container{max-width:1200px; margin:0 auto;}
 
 /* NAV */
 nav{
@@ -80,12 +122,10 @@ nav{
   transition: transform .35s var(--ease), background .35s var(--ease), padding .35s var(--ease);
   border-bottom:1px solid rgba(0,0,0,.06);
 }
-
 nav.shrink{
   padding:10px 60px;
   background:rgba(255,255,255,.95);
 }
-
 nav img{height:56px; transition: .35s var(--ease);}
 nav.shrink img{height:44px;}
 
@@ -97,7 +137,6 @@ nav ul{
   padding:0;
   align-items:center;
 }
-
 nav a{
   text-decoration:none;
   font-weight:600;
@@ -106,8 +145,6 @@ nav a{
   opacity:.92;
   transition:.25s var(--ease);
 }
-
-/* underline “sweep” */
 nav a::before{
   content:"";
   position:absolute;
@@ -124,7 +161,6 @@ nav a::before{
 }
 nav a:hover{opacity:1;}
 nav a:hover::before{transform:scaleX(1);}
-
 nav a.active::after{
   content:"";
   position:absolute;
@@ -140,7 +176,6 @@ nav a.active::after{
 .menu-toggle{
   display:none;
   font-size:28px;
-  cursor:pointer;
   user-select:none;
   padding:6px 10px;
   border-radius:10px;
@@ -162,7 +197,7 @@ nav a.active::after{
   overflow:hidden;
 }
 
-/* moving “industrial beam” */
+/* animated “industrial beam” */
 .hero::before{
   content:"";
   position:absolute;
@@ -222,13 +257,6 @@ nav a.active::after{
   letter-spacing:.3px;
 }
 
-.hero p.lead{
-  margin-top:14px;
-  font-size:clamp(16px, 2vw, 18px);
-  opacity:.9;
-  line-height:1.55;
-}
-
 .tagline{
   font-family:'Playfair Display', serif;
   font-style: italic;
@@ -237,6 +265,7 @@ nav a.active::after{
   animation: fadeIn 1.2s var(--ease) forwards;
   opacity: 0;
 }
+@keyframes fadeIn{to{opacity:1;}}
 
 .divider{
   width:110px;
@@ -247,7 +276,9 @@ nav a.active::after{
   transform:scaleX(0);
   transform-origin:left;
 }
+@keyframes growLine{to{transform:scaleX(1);}}
 
+/* pills */
 .pill-row{
   display:flex;
   gap:10px;
@@ -262,7 +293,6 @@ nav a.active::after{
   border:1px solid rgba(0,0,0,.10);
   position:relative;
   overflow:hidden;
-  transform: translateY(0);
   transition: transform .25s var(--ease), box-shadow .25s var(--ease);
 }
 .pill::after{
@@ -300,7 +330,9 @@ nav a.active::after{
   overflow:hidden;
 }
 
-/* shine sweep for buttons */
+/* nicer click ripple */
+.btn:active{transform: translateY(0px) scale(.985);}
+
 .btn::after{
   content:"";
   position:absolute;
@@ -332,7 +364,6 @@ nav a.active::after{
   background:var(--primary);
   box-shadow: 0 18px 44px rgba(0,0,0,.22);
 }
-
 .btn-ghost{
   background:rgba(255,255,255,.76);
   border:1px solid rgba(0,0,0,.12);
@@ -354,8 +385,10 @@ nav a.active::after{
   position:relative;
   overflow:hidden;
 }
-
-/* top “steel edge” */
+@keyframes floatIn{
+  from{opacity:0; transform:translateY(28px) scale(.98);}
+  to{opacity:1; transform:translateY(10px) scale(1);}
+}
 .hero-side::before{
   content:"";
   position:absolute;
@@ -376,30 +409,9 @@ nav a.active::after{
   transform: rotate(20deg);
   border-radius:50px;
 }
-
-.hero-side h3{
-  margin:0 0 8px 0;
-  font-size:18px;
-  position:relative;
-  z-index:1;
-}
-.hero-side p{
-  margin:0 0 14px 0;
-  opacity:.9;
-  line-height:1.55;
-  font-size:15px;
-  position:relative;
-  z-index:1;
-}
-.quick-list{
-  margin:0;
-  padding-left:18px;
-  line-height:1.7;
-  font-size:14.5px;
-  opacity:.92;
-  position:relative;
-  z-index:1;
-}
+.hero-side h3{margin:0 0 8px 0; font-size:18px; position:relative; z-index:1;}
+.hero-side p{margin:0 0 14px 0; opacity:.9; line-height:1.55; font-size:15px; position:relative; z-index:1;}
+.quick-list{margin:0; padding-left:18px; line-height:1.7; font-size:14.5px; opacity:.92; position:relative; z-index:1;}
 .badge{
   display:inline-block;
   margin-top:14px;
@@ -413,28 +425,13 @@ nav a.active::after{
 }
 
 /* SECTION BASE */
-section{
-  padding:110px 60px;
-}
+section{padding:110px 60px;}
 .section-inner{max-width:1200px; margin:0 auto;}
-.section-title{
-  text-align:center;
-  margin-bottom:12px;
-  font-size:34px;
-}
-.section-sub{
-  text-align:center;
-  max-width:780px;
-  margin:0 auto 44px auto;
-  opacity:.9;
-  line-height:1.65;
-}
+.section-title{text-align:center; margin-bottom:12px; font-size:34px;}
+.section-sub{text-align:center; max-width:780px; margin:0 auto 44px auto; opacity:.9; line-height:1.65;}
 
 /* STATS STRIP */
-.stats{
-  padding:0 60px 80px 60px;
-  margin-top:-40px;
-}
+.stats{padding:0 60px 80px 60px; margin-top:-40px;}
 .stats .panel{
   max-width:1200px;
   margin:0 auto;
@@ -463,30 +460,12 @@ section{
   0%{transform:translateX(-120%);}
   100%{transform:translateX(120%);}
 }
-.stat{
-  text-align:center;
-  padding:10px 8px;
-  position:relative;
-  z-index:1;
-}
-.stat .num{
-  font-size:28px;
-  font-weight:800;
-  letter-spacing:.3px;
-}
-.stat .label{
-  margin-top:6px;
-  font-size:14px;
-  opacity:.85;
-}
+.stat{text-align:center; padding:10px 8px; position:relative; z-index:1;}
+.stat .num{font-size:28px; font-weight:800; letter-spacing:.3px;}
+.stat .label{margin-top:6px; font-size:14px; opacity:.85;}
 
 /* ABOUT */
-.about-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:30px;
-  align-items:start;
-}
+.about-grid{display:grid; grid-template-columns: 1fr 1fr; gap:30px; align-items:start;}
 .about-card{
   background:var(--white);
   border-radius:var(--radius);
@@ -496,6 +475,7 @@ section{
   position:relative;
   overflow:hidden;
   transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  transform-style:preserve-3d;
 }
 .about-card::before{
   content:"";
@@ -507,39 +487,13 @@ section{
   transform: rotate(25deg);
   border-radius:44px;
 }
-.about-card:hover{
-  transform: translateY(-8px);
-  box-shadow: 0 22px 60px rgba(0,0,0,.14);
-}
-.about-card h3{margin:0 0 10px 0; position:relative; z-index:1;}
-.about-card p{margin:0; line-height:1.7; opacity:.92; position:relative; z-index:1;}
-.checks{
-  margin:14px 0 0 0;
-  padding-left:18px;
-  line-height:1.9;
-  opacity:.92;
-  position:relative;
-  z-index:1;
-}
-.kicker{
-  color:var(--primary);
-  font-weight:800;
-  letter-spacing:.4px;
-  text-transform:uppercase;
-  font-size:12px;
-  position:relative;
-  z-index:1;
-}
+.about-card:hover{box-shadow: 0 26px 70px rgba(0,0,0,.15);}
+.about-card h3, .about-card p, .about-card .checks, .about-card .kicker{position:relative; z-index:1;}
+.checks{margin:14px 0 0 0; padding-left:18px; line-height:1.9; opacity:.92;}
+.kicker{color:var(--primary); font-weight:800; letter-spacing:.4px; text-transform:uppercase; font-size:12px;}
 
 /* SERVICES */
-.services{
-  display:flex;
-  justify-content:center;
-  gap:26px;
-  margin-top:30px;
-  flex-wrap:wrap;
-}
-
+.services{display:flex; justify-content:center; gap:26px; margin-top:30px; flex-wrap:wrap;}
 .card{
   background:var(--white);
   padding:28px;
@@ -548,13 +502,11 @@ section{
   border-radius:var(--radius);
   box-shadow:var(--shadow);
   border:1px solid rgba(0,0,0,.07);
-  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  transition: transform .18s var(--ease), box-shadow .35s var(--ease);
   position:relative;
   overflow:hidden;
-  transform:translateZ(0);
+  transform-style:preserve-3d;
 }
-
-/* subtle “steel plate corner” */
 .card::before{
   content:"";
   position:absolute;
@@ -565,8 +517,6 @@ section{
   transform: rotate(25deg);
   border-radius:40px;
 }
-
-/* sheen swipe */
 .card::after{
   content:"";
   position:absolute;
@@ -576,44 +526,16 @@ section{
   opacity:.0;
   pointer-events:none;
 }
-.card:hover::after{
-  opacity:.6;
-  animation: sheen 0.9s var(--ease);
-}
-@keyframes sheen{
-  0%{transform:translateX(-140%);}
-  100%{transform:translateX(140%);}
-}
-
-.card:hover{
-  transform:translateY(-10px);
-  box-shadow: 0 22px 60px rgba(0,0,0,.14);
-}
-
-.card img{
-  width:58px;
-  margin-bottom:12px;
-  position:relative;
-  z-index:1;
-  transition: transform .35s var(--ease);
-}
-.card:hover img{transform: rotate(-2deg) scale(1.04);}
-
-.card h3{margin:8px 0 8px 0; position:relative; z-index:1;}
-.card p{margin:0; opacity:.9; line-height:1.6; position:relative; z-index:1;}
+.card:hover::after{opacity:.6; animation: sheen 0.9s var(--ease);}
+@keyframes sheen{0%{transform:translateX(-140%);} 100%{transform:translateX(140%);} }
+.card:hover{box-shadow: 0 26px 70px rgba(0,0,0,.16);}
+.card img{width:58px; margin-bottom:12px; position:relative; z-index:1; transition: transform .35s var(--ease);}
+.card h3, .card p{position:relative; z-index:1;}
+.card:hover img{transform: translateZ(18px) rotate(-2deg) scale(1.04);}
 
 /* BRANDS */
-.brands{
-  background:rgba(255,255,255,.55);
-  border-top:1px solid rgba(0,0,0,.06);
-  border-bottom:1px solid rgba(0,0,0,.06);
-}
-.brand-row{
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
+.brands{background:rgba(255,255,255,.55); border-top:1px solid rgba(0,0,0,.06); border-bottom:1px solid rgba(0,0,0,.06);}
+.brand-row{display:flex; gap:16px; flex-wrap:wrap; justify-content:center;}
 .brand{
   padding:12px 16px;
   border-radius:999px;
@@ -633,19 +555,11 @@ section{
   transform:translateX(-120%);
   transition: transform .6s var(--ease);
 }
-.brand:hover{
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-}
+.brand:hover{transform: translateY(-2px); box-shadow: var(--shadow);}
 .brand:hover::after{transform:translateX(120%);}
 
 /* WHY */
-.why-grid{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:18px;
-  margin-top:30px;
-}
+.why-grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; margin-top:30px;}
 .feature{
   background:var(--white);
   border-radius:var(--radius);
@@ -659,26 +573,19 @@ section{
 .feature::before{
   content:"";
   position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
+  left:0; top:0; bottom:0;
   width:3px;
   background:var(--primary);
   opacity:.0;
   transition: opacity .35s var(--ease);
 }
-.feature:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 22px 60px rgba(0,0,0,.13);
-}
+.feature:hover{transform: translateY(-6px); box-shadow: 0 26px 70px rgba(0,0,0,.14);}
 .feature:hover::before{opacity:1;}
 .feature h4{margin:0 0 8px 0;}
 .feature p{margin:0; opacity:.9; line-height:1.6;}
 
 /* CTA */
-.cta{
-  padding:0 60px 110px 60px;
-}
+.cta{padding:0 60px 110px 60px;}
 .cta .panel{
   max-width:1200px;
   margin:0 auto;
@@ -711,12 +618,7 @@ section{
 .cta p{margin:8px 0 0 0; opacity:.9; line-height:1.6; max-width:720px; position:relative; z-index:1;}
 
 /* CONTACT */
-.contact-wrap{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:22px;
-  align-items:start;
-}
+.contact-wrap{display:grid; grid-template-columns: 1fr 1fr; gap:22px; align-items:start;}
 .contact-card{
   background:var(--white);
   border-radius:var(--radius);
@@ -727,17 +629,8 @@ section{
   overflow:hidden;
   transition: transform .35s var(--ease), box-shadow .35s var(--ease);
 }
-.contact-card:hover{
-  transform: translateY(-6px);
-  box-shadow: 0 22px 60px rgba(0,0,0,.13);
-}
-.contact-card h3{margin:0 0 10px 0;}
-.contact-card p{margin:0 0 10px 0; opacity:.9; line-height:1.65;}
-.form{
-  display:grid;
-  gap:12px;
-  margin-top:12px;
-}
+.contact-card:hover{transform: translateY(-6px); box-shadow: 0 26px 70px rgba(0,0,0,.14);}
+.form{display:grid; gap:12px; margin-top:12px;}
 .input{
   width:100%;
   padding:12px 12px;
@@ -755,12 +648,8 @@ section{
   transform: translateY(-1px);
 }
 textarea.input{min-height:110px; resize:vertical;}
-.small{
-  font-size:13px;
-  opacity:.8;
-}
+.small{font-size:13px; opacity:.8;}
 
-/* Form warning (for in-progress form) */
 .form-warning{
   margin-top:16px;
   padding:14px 16px;
@@ -771,15 +660,8 @@ textarea.input{min-height:110px; resize:vertical;}
   line-height:1.6;
   font-weight:500;
 }
-
-.form-warning a{
-  color:var(--dark);
-  text-decoration:underline;
-}
-
-.form-warning strong{
-  font-weight:700;
-}
+.form-warning a{color:var(--dark); text-decoration:underline;}
+.form-warning strong{font-weight:700;}
 
 /* FOOTER */
 footer{
@@ -800,16 +682,8 @@ footer::before{
   opacity:.55;
   pointer-events:none;
 }
-footer img{
-  width:170px;
-  margin-bottom:14px;
-  position:relative;
-  z-index:1;
-}
-footer p, footer .footlinks{
-  position:relative;
-  z-index:1;
-}
+footer img{width:170px; margin-bottom:14px; position:relative; z-index:1;}
+footer p, footer .footlinks{position:relative; z-index:1;}
 footer .footlinks{
   margin-top:12px;
   display:flex;
@@ -821,7 +695,7 @@ footer .footlinks{
 footer .footlinks a{color:white; text-decoration:none; opacity:.85;}
 footer .footlinks a:hover{opacity:1; text-decoration:underline;}
 
-/* ---------- REVEAL ANIMATIONS (UPGRADED) ---------- */
+/* REVEAL ANIMATIONS */
 .reveal{
   opacity:0;
   transform: translateY(26px) scale(.985);
@@ -833,39 +707,22 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   transform: translateY(0) scale(1);
   filter: blur(0);
 }
+.reveal[data-delay]{ transition-delay: var(--d, 0ms); }
 
-/* stagger helper (JS adds inline delay) */
-.reveal[data-delay]{
-  transition-delay: var(--d, 0ms);
-}
-
-/* KEYFRAMES */
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(40px);}
-  to{opacity:1; transform:translateY(0);}
-}
-@keyframes fadeIn{to{opacity:1;}}
-@keyframes growLine{to{transform:scaleX(1);}}
-@keyframes floatIn{
-  from{opacity:0; transform:translateY(28px) scale(.98);}
-  to{opacity:1; transform:translateY(10px) scale(1);}
-}
+@keyframes fadeUp{ from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
 
 /* RESPONSIVE */
 @media(max-width:980px){
   .hero-grid{grid-template-columns:1fr; gap:20px;}
-  .hero-side{transform:none;}
   .stats .panel{grid-template-columns: repeat(2, 1fr);}
   .about-grid{grid-template-columns:1fr;}
   .why-grid{grid-template-columns:1fr;}
   .contact-wrap{grid-template-columns:1fr;}
 }
-
 @media(max-width:768px){
   nav{padding:14px 18px;}
   nav.shrink{padding:10px 18px;}
   nav img{height:44px;}
-
   nav ul{
     position:absolute;
     top:100%;
@@ -889,17 +746,23 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   section{padding:90px 18px;}
   .stats{padding:0 18px 70px 18px; margin-top:-30px;}
   .cta{padding:0 18px 90px 18px;}
+  .section-divider{margin:0 18px;}
 }
 
-/* Reduced motion (don’t break for accessibility) */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important; transition:none !important;}
   .reveal{opacity:1 !important; transform:none !important; filter:none !important;}
+  .scrollbar{display:none;}
+  .mouse-spot{display:none;}
 }
 </style>
 </head>
 
 <body>
+
+<div class="scrollbar" id="scrollbar"></div>
+<div class="mouse-spot" id="mouseSpot"></div>
 
 <nav id="navbar">
   <img src="assets/logo-main.png" alt="IPS Logo" />
@@ -953,11 +816,11 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
 <section class="stats reveal">
   <div class="panel">
     <div class="stat">
-      <div class="num">0000</div>
+      <div class="num" data-count="0">0000</div>
       <div class="label">Founded</div>
     </div>
     <div class="stat">
-      <div class="num">000+ years</div>
+      <div class="num" data-count="0">000+ years</div>
       <div class="label">Industry Experience</div>
     </div>
     <div class="stat">
@@ -971,6 +834,8 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   </div>
 </section>
 
+<div class="section-divider"></div>
+
 <section id="about">
   <div class="section-inner">
     <h2 class="section-title reveal">About Us</h2>
@@ -980,7 +845,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     </p>
 
     <div class="about-grid">
-      <div class="about-card reveal">
+      <div class="about-card reveal tilt">
         <span class="kicker">Who we are</span>
         <h3>Reliable supply, built on relationships.</h3>
         <p>
@@ -994,7 +859,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
         </ul>
       </div>
 
-      <div class="about-card reveal">
+      <div class="about-card reveal tilt">
         <span class="kicker">What we do</span>
         <h3>We deliver the essentials for critical systems.</h3>
         <p>
@@ -1011,6 +876,8 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   </div>
 </section>
 
+<div class="section-divider"></div>
+
 <section id="services">
   <div class="section-inner">
     <h2 class="section-title reveal">Our Services</h2>
@@ -1019,19 +886,19 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     </p>
 
     <div class="services">
-      <div class="card reveal">
+      <div class="card reveal tilt">
         <img src="assets/icon-pipe.png" alt="Pipe icon" />
         <h3>Industrial Pipe</h3>
         <p>Commercial-grade pipe solutions for industrial and facility applications.</p>
       </div>
 
-      <div class="card reveal">
+      <div class="card reveal tilt">
         <img src="assets/icon-valve.png" alt="Valve icon" />
         <h3>Valves & Fittings</h3>
         <p>Reliable valves and durable fittings to support all types of systems.</p>
       </div>
 
-      <div class="card reveal">
+      <div class="card reveal tilt">
         <img src="assets/icon-truck.png" alt="Truck icon" />
         <h3>Distribution</h3>
         <p>Fast, dependable delivery and supply chain support across Chicagoland.</p>
@@ -1056,6 +923,8 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     </div>
   </div>
 </section>
+
+<div class="section-divider"></div>
 
 <section id="why">
   <div class="section-inner">
@@ -1094,6 +963,8 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   </div>
 </section>
 
+<div class="section-divider"></div>
+
 <section id="contact">
   <div class="section-inner">
     <h2 class="section-title reveal">Contact</h2>
@@ -1118,10 +989,10 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
           <input class="input" type="text" name="name" placeholder="Your name" required />
           <input class="input" type="email" name="email" placeholder="Email address" required />
           <textarea class="input" name="message" placeholder="How can we help?" required></textarea>
-          <button class="btn btn-primary" type="submit" style="border:none; cursor:pointer;">Send Message</button>
+          <button class="btn btn-primary" type="submit" style="border:none;">Send Message</button>
           <div class="form-warning">
-            ⚠️ This form is currently under construction. 
-            Please email us directly at 
+            ⚠️ This form is currently under construction.
+            Please email us directly at
             <a href="mailto:info@industrialpipe.com"><strong>info@industrialpipe.com</strong></a>.
           </div>
         </form>
@@ -1163,7 +1034,7 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
     else nav.classList.remove("shrink");
   });
 
-  // Scroll reveal + stagger (adds a tiny delay per element)
+  // Reveal + stagger
   const reveals = document.querySelectorAll(".reveal");
   reveals.forEach((el, i) => {
     el.style.setProperty("--d", `${Math.min(i * 70, 520)}ms`);
@@ -1201,7 +1072,27 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
   window.addEventListener("scroll", setActive);
   setActive();
 
-  // Tiny “industrial” hero parallax (safe + subtle)
+  // Scroll progress bar
+  const bar = document.getElementById("scrollbar");
+  window.addEventListener("scroll", () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const progress = scrollHeight ? (scrollTop / scrollHeight) * 100 : 0;
+    bar.style.width = progress + "%";
+  });
+
+  // Mouse spotlight (smooth + subtle)
+  const spot = document.getElementById("mouseSpot");
+  let mx = 50, my = 50;
+  window.addEventListener("mousemove", (e) => {
+    mx = (e.clientX / window.innerWidth) * 100;
+    my = (e.clientY / window.innerHeight) * 100;
+    document.body.style.setProperty("--mx", mx + "%");
+    document.body.style.setProperty("--my", my + "%");
+  });
+
+  // Hero parallax (subtle)
   const hero = document.querySelector(".hero");
   window.addEventListener("scroll", () => {
     const y = window.scrollY;
@@ -1209,6 +1100,51 @@ footer .footlinks a:hover{opacity:1; text-decoration:underline;}
       hero.style.backgroundPosition = `center calc(50% + ${Math.min(y * 0.08, 60)}px)`;
     }
   });
+
+  // 3D tilt on cards (cooler but still clean)
+  const tilts = document.querySelectorAll(".tilt");
+  tilts.forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const r = card.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      const rx = ((y / r.height) - 0.5) * -8;
+      const ry = ((x / r.width) - 0.5) * 10;
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+    });
+  });
+
+  // Count-up stats (only if you use real numbers later)
+  // NOTE: if you keep "0000" this won’t change anything.
+  function animateCount(el, to){
+    const from = 0;
+    const start = performance.now();
+    const dur = 900;
+    function step(t){
+      const p = Math.min((t - start) / dur, 1);
+      const val = Math.floor(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+      el.textContent = val.toLocaleString();
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Example: If you set data-count="1998" it’ll count up.
+  const countEls = document.querySelectorAll(".num[data-count]");
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const to = parseInt(el.getAttribute("data-count"), 10);
+        if(Number.isFinite(to) && to > 0) animateCount(el, to);
+        countIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.6 });
+  countEls.forEach(el => countIO.observe(el));
 </script>
 
 </body>
